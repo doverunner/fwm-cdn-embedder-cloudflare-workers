@@ -1,0 +1,16 @@
+{
+	"name": "fwm-cdn-embedder-cloudflare-worker",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"deploy": "wrangler deploy",
+		"dev": "wrangler dev --env dev",
+		"start": "wrangler dev --env dev",
+		"test": "vitest"
+	},
+	"devDependencies": {
+		"@cloudflare/vitest-pool-workers": "^0.8.19",
+		"vitest": "~3.2.0",
+		"wrangler": "^4.59.2"
+	}
+}
