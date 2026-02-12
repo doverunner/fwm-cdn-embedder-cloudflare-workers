@@ -195,6 +195,7 @@ export default {
 	 * @returns {Promise<Response>} HTTP response
 	 */
 	async fetch(request, env, ctx) {
+
 		// Handle GET and HEAD requests
 		if (request.method === 'GET' || request.method === 'HEAD') {
 			try {
@@ -202,6 +203,13 @@ export default {
 				const url = new URL(request.url);
 				let arrUri = url.pathname.split('/');
 				const prefixFolder = arrUri[1]; // Extract first path segment
+
+				// Check if filename starts with "b." and return 403
+				const filename = request.url.split('/').pop();
+				if (filename?.startsWith('b.')) {
+					console.log('Unsafe file path request detected.', request.url);
+					return new Response("Forbidden", { status: 403 });
+				}
 
 				// Route 1: Akamai Watermark Technology
 				if (prefixFolder.startsWith('wmt:')) {
