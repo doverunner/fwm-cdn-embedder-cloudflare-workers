@@ -23,14 +23,14 @@ export const config = {
 **wmt_type**: Indicates whether the issued token format is AES-encrypted or JWT. This corresponds to the specification provided when requesting the watermark token.
 - [Watermark Token Request Specification](https://docs.doverunner.com/content-security/forensic-watermarking/embedding/session-manager/#api-data-json-format)
 
-| Key | wmt_type | Description |
-| :--- | :--- | :--- |
-| `aesKey` | aes | The Site Key issued by the DoveRunner ContentSecurity Service. |
-| `type` | aes, jwt | The [Watermark File Folder Structure](#watermark-file-folder-structure). Default: `unlabeled_a_variant`. |
-| `availableInterval` | aes, jwt | Token validity interval in seconds (0 for infinite). |
-| `prefixFolder` | aes | The top-level folder containing watermark files. Corresponds to `prefix_folder` in the [Watermark Token Request Specification](https://docs.doverunner.com/content-security/forensic-watermarking/embedding/session-manager/#api-data-json-format). |
-| `wmtPublicKey` | jwt | PEM format public key for Akamai WMT. |
-| `wmtPassword` | jwt | Password for WMT token generation/verification. |
+| Key                 | wmt_type | Description                                                                                                                                                                                                                                         |
+|:--------------------|:---------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `aesKey`            | aes      | The Site Key issued by the DoveRunner ContentSecurity Service.                                                                                                                                                                                      |
+| `type`              | aes, jwt | The [Watermark File Folder Structure](#watermark-file-folder-structure). Default: `unlabeled_a_variant`.                                                                                                                                            |
+| `availableInterval` | aes, jwt | Token validity interval in seconds (0 for infinite).                                                                                                                                                                                                |
+| `prefixFolder`      | aes      | The top-level folder containing watermark files. Corresponds to `prefix_folder` in the [Watermark Token Request Specification](https://docs.doverunner.com/content-security/forensic-watermarking/embedding/session-manager/#api-data-json-format). |
+| `wmtPublicKey`      | jwt      | PEM format public key for Akamai WMT.                                                                                                                                                                                                               |
+| `wmtPassword`       | jwt      | Password for WMT token generation/verification.                                                                                                                                                                                                     |
 
 ### Configure wrangler.jsonc
 Update the `wrangler.jsonc` file with your specific settings:

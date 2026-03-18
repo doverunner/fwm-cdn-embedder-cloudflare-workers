@@ -1,6 +1,6 @@
 import wmUtil from './wmUtil.js';
 
-const createWatermarkUrl = (contentPath, watermark, prefixFolder = '', streamingFormat = '', gop = 60) => {
+const createWatermarkUrl = (contentPath, watermark, streamingFormat='', prefixFolder ='', syncSkipBit=-1, gop =60) => {
     let responseUrl = '';
     let waterInfo = {};
     let seqNumber = -1;
@@ -35,7 +35,7 @@ const createWatermarkUrl = (contentPath, watermark, prefixFolder = '', streaming
                 startNum = 1;
             }
 
-            waterInfo.wmFlag = wmUtil.makeWatermarkFlag(watermark, startNum, seqNumber, gop);
+            waterInfo.wmFlag = wmUtil.makeWatermarkFlag(watermark, startNum, seqNumber, syncSkipBit, gop);
             waterInfo.markedFileUrl = wmUtil.makeWatermarkPathFile(waterInfo.path, waterInfo.fileName, waterInfo.wmFlag);
             break;
         case 'mp4':
@@ -53,7 +53,7 @@ const createWatermarkUrl = (contentPath, watermark, prefixFolder = '', streaming
                 startNum = 1;
             }
 
-            waterInfo.wmFlag = wmUtil.makeWatermarkFlag(watermark, startNum, seqNumber, gop);
+            waterInfo.wmFlag = wmUtil.makeWatermarkFlag(watermark, startNum, seqNumber, syncSkipBit, gop);
             waterInfo.markedFileUrl = wmUtil.makeWatermarkPathFile(waterInfo.path, waterInfo.fileName, waterInfo.wmFlag);
             break;
         default:

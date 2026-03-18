@@ -44,7 +44,7 @@ const getValidNumber = (str) => {
     }
 }
 
-const toWatermarkBinary = (str, gop) =>{
+const toWatermarkBinary = (str, gop) => {
     let fullBin = '100010000';
     let result = '';
 
@@ -71,23 +71,43 @@ const toWatermarkBinary = (str, gop) =>{
     return result;
 }
 
-const makeWatermarkFlag = (watermark, startNum, tsNum, gop) => {
-    let index = -1;
-    const accCount = 60;
-    const skipBit = 4;
+const makeWatermarkFlag = (watermark, startNum, tsNum, syncSkipBit, gop) => {
+		let index = -1;
+		let tsSeq = tsNum;
+		const accCount = 60;
+		const skipBit = 4;
+		const indicatorInterval = 3;
+		const indicatorIndex = 2;
+		let isIndicator = false;
 
-    // 8 bits -> 2 hex characters
-    let maxSkipTs = skipBit * (accCount / gop) + startNum;
-    let mark = '0';
-    if (tsNum >= maxSkipTs) {
-        let watermarkBin = toWatermarkBinary(watermark, gop);
-        // 6.ts index 0  64
-        index = tsNum - maxSkipTs;
-        index = index % watermarkBin.length;
-        mark = watermarkBin.charAt( index );
-    }
-    console.log({watermark:watermark, gop:gop, maxSkipTs:maxSkipTs, startNum:startNum, tsNum:tsNum, index:index, mark:mark});
-    return mark;
+		if (syncSkipBit > -1) {
+				tsSeq = tsSeq + syncSkipBit;
+		}
+
+		// 8 bits -> 2 hex characters
+		let maxSkipTs = skipBit * (accCount / gop) + startNum;
+		let mark = '0';
+
+		if (tsSeq >= maxSkipTs) {
+				let watermarkBin = toWatermarkBinary(watermark, gop);
+				let watermarkBinLength = watermarkBin.length;
+
+				// 6.ts index 0  64
+				index = tsSeq - maxSkipTs;
+
+				// syncSkipBit 활성 및 워터마크 길이가 65인 경우에만 indicator를 지원한다.
+				if (syncSkipBit > -1 && watermarkBinLength === 65 && Math.trunc(index / watermarkBinLength) % indicatorInterval === indicatorIndex) {
+						isIndicator = true;
+						watermarkBin = '10001000011000000110000000000000011111111000000000000001100000011';
+				}
+
+				index = index % watermarkBinLength;
+				mark = watermarkBin.charAt( index );
+		}
+
+		console.log({watermark:watermark, gop:gop, maxSkipTs:maxSkipTs, startNum:startNum, tsNum:tsNum, tsSeq:tsSeq, isIndicator:isIndicator, index:index, mark:mark});
+
+		return mark;
 }
 
 const makeWatermarkPathByDir = (contentPath, seq, wm=0) => {

@@ -17,7 +17,8 @@ const getContentUrl = async (requestPath, arrUri, prefixFolder, config, hasRevok
         "streaming_format": <dash/hls>,
         "gop":60,
         "timestamp": < YYYY-mm-ddThh:mm:ssZ >,
-        "revoke_flag": <true,false>
+        "revoke_flag": <true,false>,
+        "sync_skip_bit": -1
     }
      */
 
@@ -26,6 +27,7 @@ const getContentUrl = async (requestPath, arrUri, prefixFolder, config, hasRevok
     const timeStamp = watermarkInfo.timestamp;
     const streamingFormat = watermarkInfo.streaming_format;
     const revokeFlag = watermarkInfo.revoke_flag;
+		const syncSkipBit = watermarkInfo.sync_skip_bit? watermarkInfo.sync_skip_bit : -1
 
     // Check revoke flag - if revoke_flag is true but revoke_token was not present, deny access
     if (revokeFlag && !hasRevokeToken) {
@@ -49,7 +51,7 @@ const getContentUrl = async (requestPath, arrUri, prefixFolder, config, hasRevok
 
         const contentPath = requestPath.substring(arrUri[2].length + 2 + prefixFolder.length);
 
-        return fwmModule.createWatermarkUrl(contentPath, watermark, prefixFolder, streamingFormat);
+        return fwmModule.createWatermarkUrl(contentPath, watermark, streamingFormat, prefixFolder, syncSkipBit);
     } else {
         throw new EmbedderException('The watermarkToken usage period has expired.');
     }

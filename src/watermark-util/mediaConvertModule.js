@@ -1,6 +1,6 @@
 import wmUtil from './wmUtil.js';
 
-const createWatermarkUrl = (contentPath, watermark, prefixFolder = '', streamingFormat = '', gop = 60) => {
+const createWatermarkUrl = (contentPath, watermark, streamingFormat='', prefixFolder='', syncSkipBit=-1, gop=60) => {
     let responseUrl = `/${prefixFolder}`;
     let waterInfo = {};
 
@@ -26,7 +26,7 @@ const createWatermarkUrl = (contentPath, watermark, prefixFolder = '', streaming
                 startNum = 1;
             }
 
-            waterInfo.wmFlag = wmUtil.makeWatermarkFlag(watermark, startNum, seqNumber, gop);
+            waterInfo.wmFlag = wmUtil.makeWatermarkFlag(watermark, startNum, seqNumber, syncSkipBit, gop);
 
             responseUrl += wmUtil.makeWatermarkPathByDir(contentPath, 2, waterInfo.wmFlag);
             break;
@@ -45,7 +45,7 @@ const createWatermarkUrl = (contentPath, watermark, prefixFolder = '', streaming
                     startNum = 1;
                 }
 
-                waterInfo.wmFlag = wmUtil.makeWatermarkFlag(watermark, startNum, seqNumber, gop);
+                waterInfo.wmFlag = wmUtil.makeWatermarkFlag(watermark, startNum, seqNumber, syncSkipBit, gop);
                 responseUrl += wmUtil.makeWatermarkPathByDir(contentPath, 2, waterInfo.wmFlag);
             }
             break;
